@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kalshi — representative fixture (not captured from kalshi.com)</title>
+<!--
+  Representative markup for automated tests. It reproduces the price formats
+  Kalshi documents (¢ and % displays, "% chance", Yes/No price buttons, an
+  order panel with Buy/Sell and Yes/No sides, Kalshi Pro style tables) using
+  common React markup patterns. It is NOT a copy of Kalshi's real DOM.
+  data-expect-odds / -kind / -side: a label must appear inside this element.
+  data-expect-none: no label may appear inside this element.
+-->
+<style>
+  body { font-family: system-ui, -apple-system, Segoe UI, sans-serif; margin: 16px; color: #111; background: #fff; }
+  .topbar { display: flex; gap: 12px; align-items: center; padding-bottom: 8px; border-bottom: 1px solid #eee; }
+  .card { border: 1px solid #ddd; border-radius: 12px; padding: 12px; margin: 12px 0; max-width: 560px; }
+  .row { display: flex; align-items: center; gap: 8px; padding: 6px 0; }
+  .row .name, .row .team { flex: 1; }
+  .pct { font-weight: 700; min-width: 48px; }
+  button { font: inherit; padding: 6px 10px; border-radius: 8px; border: 1px solid #ccc; background: #f6f6f6; cursor: pointer; }
+  .yes { color: #0a7d32; } .no { color: #b3261e; }
+  table { border-collapse: collapse; } td, th { padding: 4px 8px; border-bottom: 1px solid #eee; text-align: right; }
+  .field { display: block; margin: 6px 0; }
+  .summary div { display: flex; justify-content: space-between; }
+  dl, dd { margin: 0; }
+  .digits span { display: inline-block; }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a href="/portfolio">Portfolio</a>
+  <span>Balance</span> <span data-expect-none>$1,234.56</span>
+  <span class="pnl" data-expect-none>+3.2%</span>
+</header>
+
+<main id="main">
+  <!-- Binary market card -->
+  <div class="card" id="fed-card">
+    <a href="/markets/kxfeddecision/fed-decision/kxfeddecision-26dec"><h3>Will the Fed cut rates in December?</h3></a>
+    <div class="chance"><span data-expect-odds="-163" data-expect-kind="estimate">62%</span> <span>chance</span></div>
+    <div class="meta"><span data-expect-none>$4.2M Vol.</span> <span data-expect-none>▲ 4%</span></div>
+    <div class="row">
+      <button class="yes" data-expect-odds="-163" data-expect-kind="price" data-expect-side="yes"><span>Yes</span> <span>62¢</span></button>
+      <button class="no" data-expect-odds="+156" data-expect-kind="price" data-expect-side="no"><span>No</span> <span>39¢</span></button>
+    </div>
+  </div>
+
+  <!-- Multi-outcome event -->
+  <section class="card" aria-label="Fed chair nominee">
+    <h3>Who will be nominated as Fed Chair?</h3>
+    <div class="list" id="outcome-list">
+      <div class="row" id="row-hassett">
+        <span class="name">Kevin Hassett</span>
+        <span class="pct" data-expect-odds="-300" data-expect-kind="estimate">75%</span>
+        <button class="yes" data-expect-odds="-317" data-expect-kind="price" data-expect-side="yes">Yes 76¢</button>
+        <button class="no" data-expect-odds="+317" data-expect-kind="price" data-expect-side="no">No 24¢</button>
+      </div>
+      <div class="row" id="row-warsh">
+        <span class="name">Kevin Warsh</span>
+        <span class="pct" data-expect-odds="+567" data-expect-kind="estimate">15%</span>
+        <button class="yes" data-expect-odds="+567" data-expect-kind="price" data-expect-side="yes">Yes 15¢</button>
+        <button class="no" data-expect-odds="-614" data-expect-kind="price" data-expect-side="no">No 86¢</button>
+      </div>
+      <div class="row" id="row-nochange">
+        <span class="name">No change</span>
+        <span class="pct" data-expect-odds="+1150" data-expect-kind="estimate">8%</span>
+        <button class="yes" data-expect-odds="+1150" data-expect-kind="price" data-expect-side="yes">Yes 8¢</button>
+        <button class="no" data-expect-odds="-1329" data-expect-kind="price" data-expect-side="no">No 93¢</button>
+      </div>
+      <div class="row" id="row-longshot">
+        <span class="name">Nobody before 2027</span>
+        <span class="pct" data-expect-none>&lt;1%</span>
+        <button class="yes" data-expect-odds="+9900" data-expect-kind="price" data-expect-side="yes">Yes 1¢</button>
+        <button class="no" data-expect-odds="-19900" data-expect-kind="price" data-expect-side="no">No 99.5¢</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Threshold outcome names: percentages that are part of a name, not prices -->
+  <section class="card" id="cpi">
+    <h3>CPI year over year in September</h3>
+    <div class="row"><a class="name" href="/markets/kxcpi/above-3" data-expect-none>Above 3.0%</a>
+      <span class="pct" data-expect-odds="-163" data-expect-kind="estimate">62%</span>
+      <button class="yes" data-expect-odds="-163" data-expect-kind="price" data-expect-side="yes">Yes 62¢</button>
+      <button class="no" data-expect-odds="+156" data-expect-kind="price" data-expect-side="no">No 39¢</button></div>
+    <div class="row"><span class="name" data-expect-none>2.8% or higher</span>
+      <span class="pct" data-expect-odds="-426" data-expect-kind="estimate">81%</span>
+      <button class="yes" data-expect-odds="-426" data-expect-kind="price" data-expect-side="yes">Yes 81¢</button>
+      <button class="no" data-expect-odds="+400" data-expect-kind="price" data-expect-side="no">No 20¢</button></div>
+    <div class="row"><a class="name" href="/markets/kxcpi/3-5-plus" data-expect-none>3.5%+</a>
+      <span class="pct" data-expect-odds="+1011" data-expect-kind="estimate">9%</span>
+      <button class="yes" data-expect-odds="+1011" data-expect-kind="price" data-expect-side="yes">Yes 9¢</button>
+      <button class="no" data-expect-odds="-1150" data-expect-kind="price" data-expect-side="no">No 92¢</button></div>
+    <div class="row"><button class="name" data-expect-none>Below 2.5%</button></div>
+  </section>
+
+  <!-- A fill / position price -->
+  <div class="card row" data-expect-none><span>10 Yes @ 62¢</span></div>
+
+  <!-- Sports game card: price-only buttons, team names outside the buttons -->
+  <section class="card game">
+    <h3>Eagles at Chiefs · Sun 4:25 PM</h3>
+    <div class="row"><span class="team">Eagles</span><span class="record">7-2</span><button data-expect-odds="-122" data-expect-kind="price">55¢</button></div>
+    <div class="row"><span class="team">Chiefs</span><span class="record">6-3</span><button data-expect-odds="+117" data-expect-kind="price">46¢</button></div>
+    <div class="score" data-expect-none>Q3 · 21-17</div>
+  </section>
+
+  <!-- Split text nodes and digit-per-span tickers -->
+  <section class="card">
+    <div class="row"><span class="name">Split price</span>
+      <button class="yes" id="split-btn" data-expect-odds="-213" data-expect-kind="price" data-expect-side="yes">Yes <span><span>68</span><span class="unit">¢</span></span></button>
+      <button class="yes" id="ticker-btn" data-expect-odds="-213" data-expect-kind="price" data-expect-side="yes">Yes <span class="digits"><span>6</span><span>8</span><span>¢</span></span></button>
+    </div>
+    <div class="stat" data-expect-none><div>Top 5</div><div>5%</div></div>
+  </section>
+
+  <!-- Settled market: 100% / 0% have no finite odds -->
+  <section class="card">
+    <div class="row"><span class="name">Rate cut in September</span>
+      <button class="yes" data-expect-odds="n/a" data-expect-kind="price" data-expect-side="yes">Yes 100¢</button>
+      <button class="no" data-expect-odds="n/a" data-expect-kind="price" data-expect-side="no">No 0¢</button>
+    </div>
+  </section>
+
+  <!-- Multiplier display (not a price) -->
+  <section class="card">
+    <div class="row"><span class="name">Multiplier display</span>
+      <button data-expect-none>Yes 1.6x</button><button data-expect-none>No 2.6x</button>
+    </div>
+  </section>
+
+  <!-- Existing American odds must not be converted again -->
+  <div class="card row legacy" data-expect-none><span class="team">Bills</span><span>58¢</span><span>(−138)</span></div>
+
+  <!-- Prose -->
+  <p class="card article" data-expect-none>Traders on Kalshi put the odds at 62% after the jobs report, up from 48% a week ago, while the yes contract traded near 61¢.</p>
+
+  <!-- Kalshi Pro style screener -->
+  <table class="card screener" id="screener">
+    <thead><tr><th>Market</th><th>Bid</th><th>Ask</th><th>Last</th><th>Spread</th><th>Vol (5m)</th><th>Chg</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Fed cut in Dec</td>
+        <td data-expect-odds="-156" data-expect-kind="sell">61¢</td>
+        <td data-expect-odds="-163" data-expect-kind="buy">62¢</td>
+        <td data-expect-odds="-163" data-expect-kind="last">62¢</td>
+        <td data-expect-none>1¢</td>
+        <td>1,204</td>
+        <td data-expect-none>+2¢</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Order book -->
+  <section class="card orderbook">
+    <h4>Order book</h4>
+    <table>
+      <thead><tr><th>Price</th><th>Contracts</th><th>Total</th></tr></thead>
+      <tbody>
+        <tr><td data-expect-none>64¢</td><td>350</td><td>$224.00</td></tr>
+        <tr><td data-expect-none>63¢</td><td>1,200</td><td>$756.00</td></tr>
+        <tr class="mid"><td colspan="3"><span data-expect-odds="-163" data-expect-kind="last">Last 62¢</span> · <span data-expect-none>Spread 1¢</span></td></tr>
+        <tr><td data-expect-none>61¢</td><td>900</td><td>$549.00</td></tr>
+      </tbody>
+    </table>
+  </section>
+</main>
+
+<!-- Order panel -->
+<aside class="card order-panel" aria-label="Order panel">
+  <div role="tablist" class="tabs">
+    <button role="tab" aria-selected="true" id="tab-buy">Buy</button>
+    <button role="tab" aria-selected="false" id="tab-sell">Sell</button>
+  </div>
+  <div class="row sides">
+    <button class="yes" aria-pressed="true" data-expect-odds="-163" data-expect-kind="buy" data-expect-side="yes"><span>Yes</span><span>62¢</span></button>
+    <button class="no" aria-pressed="false" data-expect-odds="+156" data-expect-kind="buy" data-expect-side="no"><span>No</span><span>39¢</span></button>
+  </div>
+  <label class="field">Amount <input id="amount" type="text" value="$25" inputmode="decimal"></label>
+  <label class="field">Limit price <input id="limit" type="text" value="62" inputmode="decimal"> ¢</label>
+  <div class="presets"><button>+$1</button><button>+$10</button><button>+$100</button></div>
+  <dl class="summary">
+    <div><dt>Avg. price</dt><dd data-expect-none>62¢</dd></div>
+    <div><dt>Contracts</dt><dd>40</dd></div>
+    <div><dt>Fee</dt><dd data-expect-none>2¢</dd></div>
+    <div><dt>Payout if Yes</dt><dd>$40.00</dd></div>
+  </dl>
+  <button class="submit" id="submit">Review order</button>
+</aside>
+</body>
+</html>

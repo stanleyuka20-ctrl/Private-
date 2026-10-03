@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Polymarket US — representative fixture (not captured from polymarket.us)</title>
+<!--
+  Representative markup for automated tests, based on Polymarket US's
+  documented formats (cents by default, $0.xx and % displays, 0.5¢ ticks,
+  "% chance", Buy/Sell order panel, sports moneyline/spread/total grids).
+  It is NOT a copy of the real DOM. See kalshi.html for the data-expect-* key.
+-->
+<style>
+  body { font-family: system-ui, -apple-system, Segoe UI, sans-serif; margin: 16px; color: #e8e8ea; background: #15191d; }
+  a { color: #8ab4f8; }
+  .card { border: 1px solid #2c3137; border-radius: 12px; padding: 12px; margin: 12px 0; max-width: 560px; background: #1d2228; }
+  .row { display: flex; align-items: center; gap: 8px; padding: 6px 0; }
+  .row .name { flex: 1; }
+  .pct { font-weight: 700; min-width: 48px; }
+  button { font: inherit; color: inherit; padding: 6px 10px; border-radius: 8px; border: 1px solid #3a4048; background: #262c33; cursor: pointer; }
+  .yes { color: #3ccf7a; } .no { color: #ff6b6b; }
+  [role="table"] { display: grid; gap: 4px; }
+  [role="row"] { display: grid; grid-template-columns: 120px repeat(3, 1fr); gap: 6px; align-items: center; }
+  .summary { display: flex; justify-content: space-between; }
+</style>
+</head>
+<body>
+<header class="row">
+  <a href="/portfolio">Portfolio</a>
+  <span>Cash</span> <span>$250.00</span>
+  <span data-expect-none>Portfolio +12.4%</span>
+</header>
+
+<main id="main">
+  <section class="card">
+    <a class="title" href="/event/fed-decision-in-december">Fed decision in December?</a>
+    <div class="row"><span class="name">25 bps decrease</span><span class="pct" data-expect-odds="-733" data-expect-kind="estimate">88%</span><button class="yes">Yes</button><button class="no">No</button></div>
+    <div class="row"><span class="name">No change</span><span class="pct" data-expect-odds="+809" data-expect-kind="estimate">11%</span><button class="yes">Yes</button><button class="no">No</button></div>
+    <div class="row"><span class="name">50+ bps decrease</span><span class="pct" data-expect-none>&lt;1%</span><button class="yes">Yes</button><button class="no">No</button></div>
+  </section>
+
+  <section class="card">
+    <a class="title" href="/event/total-goals">Total goals: over or under 2.5?</a>
+    <div class="row"><span class="name">Over</span><span class="pct" data-expect-odds="-108" data-expect-kind="estimate">52%</span><button class="yes">Yes</button><button class="no">No</button></div>
+    <div class="row"><span class="name">Under</span><span class="pct" data-expect-odds="+108" data-expect-kind="estimate">48%</span><button class="yes">Yes</button><button class="no">No</button></div>
+    <div class="row"><span class="name"><span>Above</span> <span data-expect-none>3.0%</span></span><span class="pct" data-expect-odds="+186" data-expect-kind="estimate">35%</span><button class="yes">Yes</button><button class="no">No</button></div>
+    <footer class="row"><span data-expect-none>$12.3M Vol.</span> <span>Ends Dec 10</span></footer>
+  </section>
+
+  <section class="card">
+    <a class="title" href="/event/btc-up-or-down-15m">Bitcoin Up or Down · 15 min</a>
+    <div class="gauge"><span data-expect-odds="-108" data-expect-kind="estimate">52%</span><span>chance</span></div>
+    <div class="row">
+      <button class="yes" data-expect-odds="-117" data-expect-kind="buy">Buy Up 54¢</button>
+      <button class="no" data-expect-odds="+117" data-expect-kind="buy">Buy Down 46¢</button>
+    </div>
+  </section>
+
+  <!-- Sports game page: moneyline / spread / total grid -->
+  <section class="card game">
+    <h3>Eagles vs Chiefs</h3>
+    <div role="table" aria-label="Game lines" id="lines">
+      <div role="row"><span role="columnheader">Team</span><span role="columnheader">Moneyline</span><span role="columnheader">Spread</span><span role="columnheader">Total</span></div>
+      <div role="row">
+        <span role="rowheader">Eagles</span>
+        <span role="cell"><button data-expect-odds="-122" data-expect-kind="price">55¢</button></span>
+        <span role="cell"><button data-expect-odds="-108" data-expect-kind="price">PHI -1.5 <b>52¢</b></button></span>
+        <span role="cell"><button data-expect-odds="-104" data-expect-kind="price">O 47.5 <b>51¢</b></button></span>
+      </div>
+      <div role="row">
+        <span role="rowheader">Chiefs</span>
+        <span role="cell"><button data-expect-odds="+117" data-expect-kind="price">46¢</button></span>
+        <span role="cell"><button data-expect-odds="+104" data-expect-kind="price">KC +1.5 <b>49¢</b></button></span>
+        <span role="cell"><button data-expect-odds="+104" data-expect-kind="price">U 47.5 <b>49¢</b></button></span>
+      </div>
+    </div>
+    <div class="row"><span data-expect-none>Live · Q2 14-10</span></div>
+  </section>
+
+  <!-- 0.5¢ ticks, dollar and percent displays -->
+  <section class="card">
+    <a class="title" href="/event/nba-finals-game-2">NBA Finals · Game 2</a>
+    <div class="row"><span class="name">Winner</span>
+      <button data-expect-odds="-167" data-expect-kind="price">OKC 62.5¢</button>
+      <button data-expect-odds="+167" data-expect-kind="price">IND 37.5¢</button>
+    </div>
+    <div class="row"><span class="name">Dollar display</span>
+      <button class="yes" data-expect-odds="-150" data-expect-kind="price" data-expect-side="yes">Yes $0.60</button>
+      <button class="no" data-expect-odds="+150" data-expect-kind="price" data-expect-side="no">No $0.40</button>
+    </div>
+    <div class="row"><span class="name">Percent display</span>
+      <button class="yes" data-expect-odds="-110" data-expect-kind="price" data-expect-side="yes">Yes 52.38%</button>
+      <button class="no" data-expect-odds="+110" data-expect-kind="price" data-expect-side="no">No 47.62%</button>
+    </div>
+  </section>
+
+  <!-- Already in American odds (user display setting) -->
+  <section class="card">
+    <div class="row" data-expect-none><span class="name">Eagles</span><button>PHI −122</button><button>KC +117</button></div>
+    <div class="row" data-expect-none><span class="name">Mixed</span><span>55¢ (−122)</span></div>
+  </section>
+</main>
+
+<aside class="card order-panel" aria-label="Trade">
+  <div class="row" role="tablist"><button role="tab" aria-selected="false">Buy</button><button role="tab" aria-selected="true">Sell</button></div>
+  <div class="row outcomes">
+    <button class="yes" data-state="active" data-expect-odds="-156" data-expect-kind="sell" data-expect-side="yes">Yes 61¢</button>
+    <button class="no" data-expect-odds="+163" data-expect-kind="sell" data-expect-side="no">No 38¢</button>
+  </div>
+  <label class="row">Shares <input id="shares" type="text" value="100"></label>
+  <div class="row presets"><button data-expect-none>25%</button><button data-expect-none>50%</button><button>Max</button></div>
+  <label class="row">Limit price <input id="limit" type="text" value="61"></label>
+  <div class="row slippage"><span>Max slippage</span> <button data-expect-none>1%</button><button data-expect-none>2%</button></div>
+  <div class="summary"><span>Avg price</span> <span data-expect-none>61.5¢</span></div>
+  <div class="summary"><span>To win</span> <span data-expect-none>$0.39</span></div>
+  <div class="summary"><span>Cost</span> <span data-expect-none>$0.61</span></div>
+  <button class="submit">Sell Yes</button>
+</aside>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ProphetX — representative fixture (not captured from prophetx.co)</title>
+<!--
+  Representative markup for automated tests, based on ProphetX's documented
+  post-August-2026 display (percentages under spreads, moneylines, totals and
+  props; $0.01–$0.99 contracts paying $1). It is NOT a copy of the real DOM.
+  See kalshi.html for the data-expect-* key.
+-->
+<style>
+  body { font-family: system-ui, -apple-system, Segoe UI, sans-serif; margin: 16px; color: #111; background: #f4f6f8; }
+  .card { border-radius: 12px; padding: 12px; margin: 12px 0; max-width: 620px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+  .row { display: flex; align-items: center; gap: 8px; padding: 6px 0; }
+  .team-name { flex: 1; font-weight: 600; }
+  .market-headers { display: flex; gap: 8px; justify-content: flex-end; color: #666; font-size: 12px; }
+  button.price { display: inline-flex; flex-direction: column; align-items: center; min-width: 72px; font: inherit; padding: 4px 8px; border-radius: 8px; border: 1px solid #cfd6de; background: #f9fbfc; cursor: pointer; }
+  .line { font-size: 12px; color: #555; }
+  .pct { font-weight: 700; }
+  .ticket div { display: flex; justify-content: space-between; padding: 2px 0; }
+</style>
+</head>
+<body>
+<div class="card account row">
+  <span>Balance</span> <span>$532.10</span>
+  <span>Open P/L</span> <span data-expect-none>+4.1%</span>
+</div>
+
+<main id="main">
+  <section class="card event" id="event-1">
+    <div class="event-header"><span>NFL</span> · <span>Sun 1:00 PM</span><h3>Detroit Lions @ Carolina Panthers</h3></div>
+    <div class="market-headers"><span>Spread</span><span>Moneyline</span><span>Total</span></div>
+    <div class="row team">
+      <span class="team-name">Detroit Lions</span>
+      <button class="price" data-expect-odds="-108" data-expect-kind="price"><span class="line">-3.5</span><span class="pct">52%</span></button>
+      <button class="price" data-expect-odds="-186" data-expect-kind="price"><span class="pct">65%</span></button>
+      <button class="price" data-expect-odds="-104" data-expect-kind="price"><span class="line">O 44.5</span><span class="pct">51%</span></button>
+    </div>
+    <div class="row team">
+      <span class="team-name">Carolina Panthers</span>
+      <button class="price" data-expect-odds="+104" data-expect-kind="price">+3.5 49%</button>
+      <button class="price" data-expect-odds="+178" data-expect-kind="price">36%</button>
+      <button class="price" data-expect-odds="+104" data-expect-kind="price"><span class="line">U 44.5</span><span class="pct">49%</span></button>
+    </div>
+    <div class="row event-footer"><span data-expect-none>Matched $1.2M</span> <a href="/event/123">+48 markets</a></div>
+  </section>
+
+  <section class="card props">
+    <h4>Player props · Jared Goff passing yards</h4>
+    <div class="row"><span class="team-name">Over 265.5</span><button class="price" data-expect-odds="-117" data-expect-kind="price" data-expect-side="yes">Yes 54%</button></div>
+    <div class="row"><span class="team-name">Under 265.5</span><button class="price" data-expect-odds="+117" data-expect-kind="price" data-expect-side="yes">Yes 46%</button></div>
+  </section>
+
+  <section class="card" data-expect-none>
+    <p>ProphetX switched from American odds to percentages in August 2026; a 52% price used to read as -108.</p>
+  </section>
+
+  <section class="card">
+    <div class="row" data-expect-none><span class="team-name">Legacy view</span><button class="price">-150</button><button class="price">+130</button></div>
+    <div class="row" data-expect-none><span class="team-name">Mixed display</span><button class="price">52% <small>(−108)</small></button></div>
+    <div class="row" data-expect-none><span class="team-name">Line move</span><span>▼ 3%</span></div>
+    <table class="orderbook">
+      <thead><tr><th>Price</th><th>Size</th></tr></thead>
+      <tbody><tr><td data-expect-none>53%</td><td>$410</td></tr><tr><td data-expect-none>52%</td><td>$1,220</td></tr></tbody>
+    </table>
+  </section>
+</main>
+
+<aside class="card ticket" aria-label="Trade ticket">
+  <h4>Trade ticket</h4>
+  <div><span>Detroit Lions -3.5</span></div>
+  <div><span>Price</span> <span data-expect-odds="-108" data-expect-kind="price">52%</span></div>
+  <label>Stake <input id="stake" type="text" value="$20"></label>
+  <div class="row presets"><button data-expect-none>25%</button><button data-expect-none>50%</button><button data-expect-none>75%</button><button>Max</button></div>
+  <div><span>Potential payout</span> <span>$38.46</span></div>
+  <div><span>Commission</span> <span data-expect-none>2%</span></div>
+  <div><span>Contract price</span> <span data-expect-odds="-108" data-expect-kind="price">$0.52</span></div>
+  <button id="place">Place order</button>
+</aside>
+</body>
+</html>

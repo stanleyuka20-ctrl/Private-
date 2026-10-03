@@ -1,0 +1,67 @@
+{
+  "manifest_version": 3,
+  "name": "American Odds Converter",
+  "short_name": "Odds Converter",
+  "version": "1.0.0",
+  "description": "Shows equivalent American odds (before fees) next to prices on Polymarket US, Kalshi, ProphetX and Novig. Runs locally.",
+  "minimum_chrome_version": "111",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_title": "American Odds Converter",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png"
+    }
+  },
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://polymarket.us/*"
+      ],
+      "js": [
+        "content/polymarket-us.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://kalshi.com/*"
+      ],
+      "js": [
+        "content/kalshi.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://www.prophetx.co/*",
+        "https://prophetx.co/*"
+      ],
+      "js": [
+        "content/prophetx.js"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://novig.com/*",
+        "https://app.novig.us/*"
+      ],
+      "js": [
+        "content/novig.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

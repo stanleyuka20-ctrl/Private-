@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>American Odds Converter</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main class="popup">
+    <header class="top">
+      <img class="logo" src="../icons/icon-32.png" width="24" height="24" alt="">
+      <h1>American Odds Converter</h1>
+      <label class="switch" title="Turn all conversions on or off">
+        <input type="checkbox" role="switch" id="enabled" aria-describedby="enabled-help">
+        <span class="track" aria-hidden="true"></span>
+        <span class="visually-hidden">Converter on</span>
+      </label>
+    </header>
+    <p id="enabled-help" class="visually-hidden">Master switch for all supported sites.</p>
+
+    <section id="status" class="status" role="status" aria-live="polite" aria-atomic="true">
+      <p class="status-title" id="status-title">Checking this tab…</p>
+      <p class="status-detail" id="status-detail"></p>
+      <p class="status-note" id="status-note"></p>
+    </section>
+
+    <section aria-labelledby="sites-heading">
+      <h2 id="sites-heading">Sites</h2>
+      <ul class="sites" id="sites"></ul>
+    </section>
+
+    <section aria-labelledby="display-heading">
+      <h2 id="display-heading">Display</h2>
+      <fieldset class="segmented" id="display-order">
+        <legend class="visually-hidden">What to show next to prices</legend>
+        <label><input type="radio" name="displayOrder" value="odds-first"><span>Odds first</span></label>
+        <label><input type="radio" name="displayOrder" value="price-first"><span>Price first</span></label>
+        <label><input type="radio" name="displayOrder" value="price-only"><span>Prices only</span></label>
+      </fieldset>
+      <p class="example" id="display-example" aria-live="polite"></p>
+      <div class="field-row">
+        <label for="rounding">Rounding</label>
+        <select id="rounding">
+          <option value="whole">Whole number (−110)</option>
+          <option value="tenth">One decimal (−109.9)</option>
+          <option value="five">Nearest 5 (−110, −115)</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <label for="theme">Theme</label>
+        <select id="theme">
+          <option value="auto">Match system</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+    </section>
+
+    <section aria-labelledby="calc-heading">
+      <h2 id="calc-heading">Calculator</h2>
+      <div class="calc">
+        <label for="calc-input">Probability</label>
+        <div class="calc-input">
+          <input id="calc-input" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" placeholder="52.38" aria-describedby="calc-detail">
+          <span aria-hidden="true">%</span>
+        </div>
+        <output id="calc-output" for="calc-input" aria-live="polite">—</output>
+      </div>
+      <p class="calc-detail" id="calc-detail">Enter a percentage between 0 and 100.</p>
+    </section>
+
+    <footer class="foot">
+      <p>
+        <strong>Equivalent odds before fees.</strong>
+        Rounded source prices can make a conversion approximate, and actual execution prices may differ.
+        Everything runs locally in your browser; nothing is collected or sent.
+      </p>
+      <div class="foot-row">
+        <button type="button" id="copy-diagnostics" class="link-button">Copy page diagnostics</button>
+        <span class="version" id="version"></span>
+      </div>
+      <p class="diag-message" id="diag-message" aria-live="polite"></p>
+      <textarea id="diag-fallback" class="diag-fallback" rows="6" readonly hidden aria-label="Diagnostics report"></textarea>
+    </footer>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>
